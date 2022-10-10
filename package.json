@@ -1,0 +1,22 @@
+{
+  "name": "cloudx: backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PavelKuzniatsou/shop-angular-cloudfront-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PavelKuzniatsou/shop-angular-cloudfront-backend/issues"
+  },
+  "homepage": "https://github.com/PavelKuzniatsou/shop-angular-cloudfront-backend#readme",
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}
