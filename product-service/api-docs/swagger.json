@@ -1,0 +1,106 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "CLoudX: product API",
+    "description": "CloudX: product API for store backend.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://ta6mjyl089.execute-api.eu-west-1.amazonaws.com"
+    }
+  ],
+  "paths": {
+    "/dev/products/1": {
+      "get": {
+        "description": "Get product by ID.",
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                },
+                "examples": {
+                  "0": {
+                    "value": "{\"product\":{\"description\":\"The Toyota Yaris Cross is a subcompact crossover SUV (B-segment).\",\"id\":\"1\",\"price\":100,\"title\":\"Toyota Yaris Cross\"}}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://ta6mjyl089.execute-api.eu-west-1.amazonaws.com"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://ta6mjyl089.execute-api.eu-west-1.amazonaws.com"
+        }
+      ]
+    },
+    "/dev/products": {
+      "get": {
+        "description": "Get products.",
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "examples": {
+                  "0": {
+                    "value": "[{\"description\":\"The Toyota Yaris Cross is a subcompact crossover SUV (B-segment).\",\"id\":\"1\",\"price\":100,\"title\":\"Toyota Yaris Cross\"},{\"description\":\"The Toyota C-HR is a subcompact crossover SUV.\",\"id\":\"2\",\"price\":130,\"title\":\"Toyota CHR\"},{\"description\":\"The Toyota Corolla Cross is a compact crossover SUV.\",\"id\":\"3\",\"price\":150,\"title\":\"Toyota Corolla Cross\"},{\"description\":\"The Toyota RAV4 is a crossover SUV.\",\"id\":\"4\",\"price\":180,\"title\":\"Toyota RAV-4\"},{\"description\":\"The Toyota Highlander is a mid-size crossover SUV.\",\"id\":\"5\",\"price\":220,\"title\":\"Toyota Highlander\"},{\"description\":\"The Toyota Land Cruiser is a full-size crossover SUV.\",\"id\":\"6\",\"price\":300,\"title\":\"Toyota Land Cruiser\"}]"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "servers": [
+          {
+            "url": "https://ta6mjyl089.execute-api.eu-west-1.amazonaws.com"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://ta6mjyl089.execute-api.eu-west-1.amazonaws.com"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "inline_response_200": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "type": "object",
+            "properties": {
+              "price": {
+                "type": "integer"
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
