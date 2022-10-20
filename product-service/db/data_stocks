@@ -1,0 +1,3 @@
+aws dynamodb put-item --table-name cloudx_be_stocks --item "{\"product_id\":{\"N\":\"1\"},\"count\":{\"N\":\"40\"}}"
+aws dynamodb put-item --table-name cloudx_be_stocks --item "{\"product_id\":{\"N\":\"2\"},\"count\":{\"N\":\"50\"}}"
+aws dynamodb put-item --table-name cloudx_be_stocks --item "{\"product_id\":{\"N\":\"3\"},\"count\":{\"N\":\"60\"}}"
