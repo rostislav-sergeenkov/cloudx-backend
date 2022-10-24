@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PavelKuzniatsou/shop-angular-cloudfront-backend.git"
+    "url": "git+https://github.com/rostislav-sergeenkov/cloudx-backend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PavelKuzniatsou/shop-angular-cloudfront-backend/issues"
+    "url": "https://github.com/rostislav-sergeenkov/cloudx-backend/issues"
   },
-  "homepage": "https://github.com/PavelKuzniatsou/shop-angular-cloudfront-backend#readme",
+  "homepage": "https://github.com/rostislav-sergeenkov/cloudx-backend#readme",
   "devDependencies": {
     "prettier": "^2.7.1"
   }
