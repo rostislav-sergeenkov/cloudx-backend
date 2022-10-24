@@ -1,0 +1,3 @@
+aws dynamodb put-item --table-name cloudx_be_products --item "{\"id\":{\"N\":\"1\"},\"title\":{\"S\":\"Toyota Yaris Cross\"},\"description\":{\"S\":\"The Toyota Yaris Cross is a subcompact crossover SUV (B-segment).\"},\"price\":{\"N\":\"100\"}}"
+aws dynamodb put-item --table-name cloudx_be_products --item "{\"id\":{\"N\":\"2\"},\"title\":{\"S\":\"Toyota C-HR\"},\"description\":{\"S\":\"The Toyota C-HR is a subcompact crossover SUV.\"},\"price\":{\"N\":\"130\"}}"
+aws dynamodb put-item --table-name cloudx_be_products --item "{\"id\":{\"N\":\"3\"},\"title\":{\"S\":\"Toyota RAV-4\"},\"description\":{\"S\":\"The Toyota RAV4 is a crossover SUV.\"},\"price\":{\"N\":\"180\"}}"
