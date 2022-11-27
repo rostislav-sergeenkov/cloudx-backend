@@ -18,5 +18,10 @@
   "homepage": "https://github.com/rostislav-sergeenkov/cloudx-backend#readme",
   "devDependencies": {
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.201.0",
+    "@aws-sdk/s3-request-presigner": "^3.201.0",
+    "csv-parser": "^3.0.0"
   }
 }
