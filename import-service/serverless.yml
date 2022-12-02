@@ -12,6 +12,8 @@ provider:
   runtime: nodejs16.x
   region: eu-west-1
   stage: dev
+  environment:
+    SQS_URL: https://sqs.eu-west-1.amazonaws.com/368848598594/cloudx_products_simple_queue
   iamRoleStatements:
     - Effect: Allow
       Action: s3:ListBucket
@@ -19,6 +21,9 @@ provider:
     - Effect: Allow
       Action: s3:*
       Resource: arn:aws:s3:::import-product-service-bucket/*
+    - Effect: Allow
+      Action: "sqs:*"
+      Resource: "arn:aws:sqs:eu-west-1:368848598594:cloudx_products_simple_queue"
 
 functions:
   importProductsFile:

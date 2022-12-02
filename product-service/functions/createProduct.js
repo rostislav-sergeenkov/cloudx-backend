@@ -2,13 +2,18 @@
 
 const AWS = require('aws-sdk');
 const dynamo = new AWS.DynamoDB.DocumentClient();
+const { dataIsValid } = require('../validation');
+const defaultHeaders = { 'Access-Control-Allow-Origin': '*' };
+
+// @todo: in the future re-factor the entire file to use createProduct method.
 
 module.exports = async (product) => {
   console.log("lambda invocation on createProduct", product);
 
-  if (!product.title || !product.description || !product.price || !product.count) {
+  if (!dataIsValid(product)) {
     return {
       statusCode: 400,
+      headers: defaultHeaders,
       body: JSON.stringify("Invalid Request: all product attributes must be present.")
     };
   }
@@ -38,13 +43,15 @@ module.exports = async (product) => {
 
     return {
       statusCode: 200,
+      headers: defaultHeaders,
       body: JSON.stringify(product.id)
     };
   }
   catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify(err),
+      headers: defaultHeaders,
+      body: JSON.stringify(err)
     };
   }
 }
