@@ -20,6 +20,18 @@ provider:
       Action: s3:*
       Resource: arn:aws:s3:::import-product-service-bucket/*
 
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
 functions:
   importProductsFile:
     handler: handler.importProductsFile
@@ -32,6 +44,12 @@ functions:
             parameters:
               querystrings:
                 name: true
+          authorizer:
+            name: basicAuthorizer
+            arn: "arn:aws:lambda:${aws:region}:${aws:accountId}:function:backend-authorization-service-dev-basicAuthorizer"
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
     environment:
       S3_BUCKET: import-product-service-bucket
       UPLOADED_DIR: uploaded

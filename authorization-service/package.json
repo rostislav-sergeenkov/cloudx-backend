@@ -1,0 +1,12 @@
+{
+  "name": "backend-authorization-service",
+  "version": "1.0.0",
+  "description": "Backend authorization service",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "serverless-dotenv-plugin": "^4.0.2"
+  }
+}

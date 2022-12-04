@@ -1,0 +1,20 @@
+service: backend-authorization-service
+frameworkVersion: '3'
+
+plugins:
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  profile: default
+  runtime: nodejs16.x
+  region: eu-west-1
+  stage: dev
+
+package:
+  patterns:
+    - '!./node_modules/**'
+
+functions:
+  basicAuthorizer :
+    handler: handler.basicAuthorizer
