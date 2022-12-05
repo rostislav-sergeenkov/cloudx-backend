@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.basicAuthorizer = async (event, ctx, cb) => {
+module.exports = async (event, ctx, cb) => {
   console.log('Event: ', JSON.stringify(event));
 
   if (event.type !== 'TOKEN') {
@@ -14,9 +14,12 @@ module.exports.basicAuthorizer = async (event, ctx, cb) => {
     const username = plainTextCreds[0];
     const password = plainTextCreds[1];
 
-    console.log(`user: ${username} / pwd: ${password}`);
+    console.log(`token username: ${username} / token pwd: ${password}`);
 
     const storedUserPassword = process.env[username];
+
+    console.log(`.env username: ${username} / .env pwd: ${process.env[username]}`);
+
     const effect = (!storedUserPassword || storedUserPassword !== password) ? 'Deny' : 'Allow';
     const policy = generatePolicy(encodedCreds, event.methodArn, effect);
 

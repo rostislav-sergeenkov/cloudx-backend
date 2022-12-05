@@ -4,6 +4,8 @@ frameworkVersion: '3'
 plugins:
   - serverless-dotenv-plugin
 
+useDotenv: true
+
 provider:
   name: aws
   profile: default
