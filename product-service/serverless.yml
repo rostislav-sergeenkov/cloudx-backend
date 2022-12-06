@@ -7,6 +7,37 @@ provider:
   runtime: nodejs16.x
   region: eu-west-1
   stage: dev
+  environment:
+    TABLE_STOCKS: cloudx_be_stocks
+    TABLE_PRODUCTS: cloudx_be_products
+    SQS_QUEUE:
+      Ref: catalogItemsQueue
+    SNS_TOPIC:
+      Ref: ProductTopic
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource:
+            - "Fn::GetAtt": [cloudxBeProducts, Arn]
+            - "Fn::GetAtt": [cloudxBeStocks, Arn]
+        - Effect: Allow
+          Action: "sqs:*"
+          Resource:
+            - Fn::GetAtt: [catalogItemsQueue, Arn]
+        - Effect: Allow
+          Action: "sns:*"
+          Resource:
+            Ref: ProductTopic
 
 functions:
   getProductsList:
@@ -16,9 +47,6 @@ functions:
           path: products
           method: get
           cors: true
-    environment:
-      TABLE_STOCKS: cloudx_be_stocks
-      TABLE_PRODUCTS: cloudx_be_products
 
   createProduct:
     handler: handler.createProduct
@@ -27,9 +55,6 @@ functions:
           path: products
           method: post
           cors: false
-    environment:
-      TABLE_STOCKS: cloudx_be_stocks
-      TABLE_PRODUCTS: cloudx_be_products
 
   getProductById:
     handler: handler.getProductById
@@ -42,9 +67,16 @@ functions:
             parameters:
               paths:
                 id: true
-    environment:
-      TABLE_STOCKS: cloudx_be_stocks
-      TABLE_PRODUCTS: cloudx_be_products
+
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - catalogItemsQueue
+              - Arn
 
   getApiDocs:
     handler: handler.getApiDocs
@@ -59,7 +91,7 @@ resources:
     cloudxBeProducts:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: cloudx_be_products
+        TableName: ${self:provider.environment.TABLE_PRODUCTS}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: N
@@ -73,7 +105,7 @@ resources:
     cloudxBeStocks:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: cloudx_be_stocks
+        TableName: ${self:provider.environment.TABLE_STOCKS}
         AttributeDefinitions:
           - AttributeName: product_id
             AttributeType: N
@@ -83,3 +115,19 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 2
           WriteCapacityUnits: 2
+
+    catalogItemsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: cloudx_products_simple_queue
+    ProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: cloudx_products_sns_topic
+    ProductTopicSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        Endpoint: rostislav.sergeenkov@gmail.com
+        TopicArn:
+          Ref: ProductTopic
