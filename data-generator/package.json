@@ -1,0 +1,18 @@
+{
+  "name": "test-data-generator",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "products.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.188.0",
+    "dotenv": "^16.0.3",
+    "pg": "^8.8.0"
+  }
+}
