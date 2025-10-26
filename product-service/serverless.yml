@@ -54,7 +54,7 @@ functions:
       - http:
           path: products
           method: post
-          cors: false
+          cors: true
 
   getProductById:
     handler: handler.getProductById
