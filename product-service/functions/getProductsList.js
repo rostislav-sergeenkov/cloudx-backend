@@ -9,12 +9,16 @@ module.exports = async (event) => {
     const response = [];
     const products = await dynamo.scan({TableName: process.env.TABLE_PRODUCTS}).promise();
 
-    if (products.Items.length) {
+    if (products.Items && products.Items.length) {
       const stocks = await dynamo.scan({TableName: process.env.TABLE_STOCKS}).promise();
 
       products.Items.forEach((item) => {
         const inStock = stocks.Items.find((stock) => stock.product_id === item.id);
-        response.push({...item, count: inStock.count});
+        if (inStock) {
+          response.push({...item, count: inStock.count});
+        } else {
+          response.push({...item, count: 0});
+        }
       });
     }
 
@@ -27,9 +31,14 @@ module.exports = async (event) => {
       }
     };
   } catch (err) {
+    console.error('Error fetching products:', err);
     return {
       statusCode: 500,
-      body: JSON.stringify(err),
+      body: JSON.stringify({error: 'Internal server error'}),
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      }
     };
   }
 };

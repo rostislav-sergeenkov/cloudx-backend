@@ -26,7 +26,7 @@ module.exports = {
       return {
         statusCode: 400,
         headers: { 'Access-Control-Allow-Origin': '*' },
-        body: 'Data is invalid.',
+        body: JSON.stringify({error: 'Data is invalid.'}),
       };
     }
 
