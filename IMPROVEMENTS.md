@@ -85,10 +85,11 @@ This document outlines the changes made to improve code quality, security, and r
    - Risk: Multiple concurrent requests may generate the same ID
 
 3. **Hard-coded Values**
-   - AWS Account ID in `import-service/serverless.yml` (line 54)
-   - S3 Bucket ARN in `import-service/serverless.yml` (lines 20, 23, 26)
-   - Email address in `product-service/serverless.yml` (line 131)
+   - AWS Account ID hard-coded in `import-service/serverless.yml` (lines 16, 26)
+   - Email address hard-coded in `product-service/serverless.yml` (line 131)
+   - S3 Bucket names hard-coded in `import-service/serverless.yml` (lines 20, 23, 26, 59)
    - Recommendation: Move to environment variables or SSM parameters
+   - Note: Line 54 correctly uses CloudFormation pseudo-parameters for AWS account ID
 
 4. **Input Validation**
    - Add validation for:
@@ -97,10 +98,11 @@ This document outlines the changes made to improve code quality, security, and r
      - Price and count ranges in product validation
    - Consider using a validation library like Joi or Yup
 
-5. **Environment Variables Inconsistency**
-   - `importFileParser.js` uses `process.env.SQS_URL`
-   - `serverless.yml` defines `SQS_QUEUE` for product-service
-   - Recommendation: Standardize naming conventions
+5. **Environment Variables Consistency**
+   - `import-service` correctly uses `SQS_URL` as environment variable (line 16)
+   - `product-service` uses `SQS_QUEUE` as a CloudFormation Ref (line 13)
+   - Both are correct for their respective use cases
+   - Recommendation: Document the difference between direct URLs and CloudFormation references
 
 ### Medium Priority
 
