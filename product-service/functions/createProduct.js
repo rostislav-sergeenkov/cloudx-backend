@@ -14,7 +14,7 @@ module.exports = async (product) => {
     return {
       statusCode: 400,
       headers: defaultHeaders,
-      body: JSON.stringify("Invalid Request: all product attributes must be present.")
+      body: JSON.stringify({error: "Invalid Request: all product attributes must be present."})
     };
   }
 
@@ -44,14 +44,15 @@ module.exports = async (product) => {
     return {
       statusCode: 200,
       headers: defaultHeaders,
-      body: JSON.stringify(product.id)
+      body: JSON.stringify({id: product.id})
     };
   }
   catch (err) {
+    console.error('Error creating product:', err);
     return {
       statusCode: 500,
       headers: defaultHeaders,
-      body: JSON.stringify(err)
+      body: JSON.stringify({error: 'Internal server error'})
     };
   }
 }

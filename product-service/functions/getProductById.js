@@ -13,15 +13,23 @@ const RESPONSE = {
 module.exports = async (event) => {
   console.log("lambda invocation on getProductById", event);
 
-  if (!event || !event.pathParameters) {
+  if (!event || !event.pathParameters || !event.pathParameters.id) {
     return {
       ...RESPONSE,
       statusCode: 400,
-      body: 'Such product cannot be found.',
+      body: JSON.stringify({error: 'Product ID is required'}),
     };
   }
 
   const id = Number(event.pathParameters.id);
+
+  if (isNaN(id)) {
+    return {
+      ...RESPONSE,
+      statusCode: 400,
+      body: JSON.stringify({error: 'Invalid product ID'}),
+    };
+  }
 
   try {
     const response = [];
@@ -31,14 +39,15 @@ module.exports = async (event) => {
       ExpressionAttributeValues: {':id': id},
     }).promise();
 
-    if (products.Items.length) {
+    if (products.Items && products.Items.length) {
       const stocks = await dynamo.query({
         TableName: process.env.TABLE_STOCKS,
         KeyConditionExpression: 'product_id = :product_id',
         ExpressionAttributeValues: {':product_id': id},
       }).promise();
 
-      response.push({...products.Items[0], ...stocks.Items[0]});
+      const stockData = stocks.Items && stocks.Items.length > 0 ? stocks.Items[0] : {count: 0};
+      response.push({...products.Items[0], ...stockData});
 
       return {
         ...RESPONSE,
@@ -49,14 +58,15 @@ module.exports = async (event) => {
 
     return {
       ...RESPONSE,
-      statusCode: 400,
-      body: JSON.stringify('Product not found.'),
+      statusCode: 404,
+      body: JSON.stringify({error: 'Product not found'}),
     };
   } catch (err) {
+    console.error('Error fetching product:', err);
     return {
       ...RESPONSE,
       statusCode: 500,
-      body: JSON.stringify(err),
+      body: JSON.stringify({error: 'Internal server error'}),
     };
   }
 };

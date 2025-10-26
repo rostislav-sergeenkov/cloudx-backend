@@ -24,18 +24,23 @@ module.exports = async (event) => {
       const s3Stream = s3.getObject(params).createReadStream().pipe(csv());
 
       // Task 6.2.1: Update the importFileParser lambda function in the Import Service to send each CSV record into SQS.
-      await s3Stream
-        .on('data', (item) => sqs.sendMessage(
-          {
-            QueueUrl: process.env.SQS_QUEUE,
-            MessageBody: JSON.stringify(item),
-          },
-          (error) => {
-            console.log('Error: ', error);
-            console.log('Send SQS message: ', item);
-          }))
-        .on('error', () => reject())
-        .on('end', () => resolve());
+      await new Promise((resolve, reject) => {
+        s3Stream
+          .on('data', (item) => sqs.sendMessage(
+            {
+              QueueUrl: process.env.SQS_URL,
+              MessageBody: JSON.stringify(item),
+            },
+            (error) => {
+              if (error) {
+                console.log('Error: ', error);
+              } else {
+                console.log('Send SQS message: ', item);
+              }
+            }))
+          .on('error', (error) => reject(error))
+          .on('end', () => resolve());
+      });
 
       await s3
         .copyObject({
@@ -53,6 +58,7 @@ module.exports = async (event) => {
         .promise();
     }
     catch (error) {
+      console.error('Error processing file:', error);
       message = error.toString();
       statusCode = 500;
     }
@@ -63,6 +69,6 @@ module.exports = async (event) => {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    body: JSON.stringify(message)
+    body: JSON.stringify(message || 'Files processed successfully')
   };
 };

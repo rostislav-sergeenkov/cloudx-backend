@@ -39,11 +39,12 @@ module.exports = async (event) => {
   try {
     console.log('catalogBatchProcess: ', JSON.stringify(event));
     return await catalogBatchProcess(event);
-  } catch {
+  } catch (error) {
+    console.error('Error in catalogBatchProcess:', error);
     return {
       statusCode: 500,
       headers: defaultHeaders,
-      body: 'Server error.',
+      body: JSON.stringify({error: 'Server error'}),
     };
   }
 };
